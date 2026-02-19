@@ -16,8 +16,9 @@ public class MemoryBankAccountRepository implements BankAccountRepository {
     }
 
     @Override
-    public void save(BankAccount account) {
+    public BankAccount save(BankAccount account) {
         storage.put(account.getId(), account);
+        return account;
     }
 
     @Override

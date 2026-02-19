@@ -3,9 +3,7 @@ package com.safebank.bank_api.domain;
 import com.safebank.bank_api.exception.AccountLockedException;
 import com.safebank.bank_api.exception.InsufficientBalanceException;
 import com.safebank.bank_api.exception.InvalidAmountException;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,11 +13,19 @@ import java.util.List;
 @Table(name = "bank_account")
 public class BankAccount {
 
+    @Transient
     private List<Transaction> transactions = new ArrayList<>();
+
     @Id
-    private final String id;
+    private String id;
+
+    @Column(nullable = false)
     private String owner;
-    private BigDecimal balance;
+
+    @Column(nullable = false)
+    private BigDecimal balance = BigDecimal.ZERO;
+    
+    @Column(name = "locked", nullable = false)
     private boolean lockStatus = false;
 
     public BankAccount(String id, String owner){
@@ -34,18 +40,17 @@ public class BankAccount {
         this.balance = balance;
     }
 
-
+    protected BankAccount(){}
 
     public void deposit(BigDecimal amount){
         if (lockStatus){
             throw new AccountLockedException("Account is locked");
         }
-        if(balance.compareTo(amount) < 0) {
-            balance = balance.add(amount);
-            transactions.add(Transaction.deposit(amount, balance));
-        } else {
-            throw new InvalidAmountException("Amount: " + amount + " must be above 0 ");
+        if(amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidAmountException("Amount must be above 0");
         }
+        balance = balance.add(amount);
+        transactions.add(Transaction.deposit(amount, balance));
     }
 
     public void withdraw(BigDecimal amount) {

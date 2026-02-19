@@ -6,7 +6,6 @@ import com.safebank.bank_api.domain.BankAccount;
 import com.safebank.bank_api.exception.AccountNotFoundException;
 import com.safebank.bank_api.exception.InsufficientBalanceException;
 import com.safebank.bank_api.exception.InvalidAmountException;
-import com.safebank.bank_api.repository.BankAccountRepository;
 import com.safebank.bank_api.repository.MemoryBankAccountRepository;
 
 import java.math.BigDecimal;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BankAccountServiceTest {
 
     private BankAccount account;
-    private BankAccountRepository bankRepo;
+    private MemoryBankAccountRepository bankRepo;
     private BankAccountService bankService;
 
     @BeforeEach

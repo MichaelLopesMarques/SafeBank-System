@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MemoryBankAccountRepositoryTest {
 
     private BankAccount account;
-    private BankAccountRepository bankRepo;
+    private MemoryBankAccountRepository bankRepo;
 
     @BeforeEach
     void setUp(){
