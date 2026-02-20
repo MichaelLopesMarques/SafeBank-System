@@ -1,9 +1,11 @@
 package com.safebank.bank_api.repository;
 
 import com.safebank.bank_api.domain.BankAccount;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public class JpaBankAccountRepository implements BankAccountRepository{
 
     private final SpringDataBankAccountRepository repo;

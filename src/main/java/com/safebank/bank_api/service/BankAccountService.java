@@ -3,9 +3,13 @@ package com.safebank.bank_api.service;
 import com.safebank.bank_api.domain.BankAccount;
 import com.safebank.bank_api.exception.AccountNotFoundException;
 import com.safebank.bank_api.repository.BankAccountRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
+@Service
+@Transactional
 public class BankAccountService {
 
     private final BankAccountRepository repository;
@@ -14,11 +18,11 @@ public class BankAccountService {
         this.repository = repository;
     }
 
-    public void createAccount(String accountId, String name){
+    public BankAccount createAccount(String accountId, String name){
         if (repository.existsById(accountId)){
             throw new IllegalStateException("Account already exists!");
         }
-        repository.save(new BankAccount(accountId, name));
+        return repository.save(new BankAccount(accountId, name));
     }
 
     public void deposit(String accountId, BigDecimal amount){
