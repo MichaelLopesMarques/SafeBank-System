@@ -2,13 +2,13 @@ POST http://localhost:8080/accounts
 Content-Type: application/json
 
 {
-  "id": "AC-1",
-  "owner": "Michael"
+  "id": "AC-DE-2026-01",
+  "owner": "Michael Marques"
 }
 
 ###
 
-GET http://localhost:8080/accounts/AC-1
+GET http://localhost:8080/accounts/AC-DE-2026-01
 
 ###
 
@@ -16,7 +16,7 @@ GET http://localhost:8080/accounts/DOES-NOT-EXIST
 
 ###
 
-POST http://localhost:8080/accounts/AC-1/deposit
+POST http://localhost:8080/accounts/AC-DE-2026-01/deposit
 Content-Type: application/json
 
 {
@@ -25,11 +25,11 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/accounts/AC-1/balance
+GET http://localhost:8080/accounts/AC-DE-2026-01/balance
 
 ###
 
-POST http://localhost:8080/accounts/AC-1/withdraw
+POST http://localhost:8080/accounts/AC-DE-2026-01/withdraw
 Content-Type: application/json
 
 {
@@ -38,7 +38,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/accounts/AC-1/deposit
+POST http://localhost:8080/accounts/AC-DE-2026-01/deposit
 Content-Type: application/json
 
 {

@@ -1,6 +1,7 @@
 package com.safebank.bank_api.controller;
 
 import com.safebank.bank_api.domain.BankAccount;
+import com.safebank.bank_api.dto.BankAccountResponse;
 import com.safebank.bank_api.service.BankAccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,29 +19,29 @@ public class BankAccountController {
     }
 
     public record CreateAccountRequest(String id, String owner) {}
-
     public record AmountRequest(BigDecimal amount) {}
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BankAccount createAccount(@RequestBody CreateAccountRequest request) {
-        return service.createAccount(request.id(), request.owner());
+    public BankAccountResponse createAccount(@RequestBody CreateAccountRequest request) {
+        BankAccount account = service.createAccount(request.id(), request.owner());
+        return mapToResponse(account);
     }
 
     @PostMapping("/{id}/deposit")
-    public void deposit(
+    public BankAccountResponse deposit(
             @PathVariable String id,
             @RequestBody AmountRequest request) {
 
-        service.deposit(id, request.amount());
+        return mapToResponse(service.deposit(id, request.amount()));
     }
 
     @PostMapping("/{id}/withdraw")
-    public void withdraw(
+    public BankAccountResponse withdraw(
             @PathVariable String id,
             @RequestBody AmountRequest request) {
 
-        service.withdraw(id, request.amount());
+        return mapToResponse(service.withdraw(id, request.amount()));
     }
 
     @GetMapping("/{id}/balance")
@@ -49,9 +50,17 @@ public class BankAccountController {
     }
 
     @GetMapping("/{id}")
-    public BankAccount getAccount(@PathVariable String id) {
-        return service.getAccount(id);
+    public BankAccountResponse getAccount(@PathVariable String id) {
+        return mapToResponse(service.getAccount(id));
     }
 
+    private BankAccountResponse mapToResponse(BankAccount account) {
+        return new BankAccountResponse(
+                account.getId(),
+                account.getOwner(),
+                account.getBalance(),
+                account.isLocked()
+        );
+    }
 
 }
