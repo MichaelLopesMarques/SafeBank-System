@@ -36,6 +36,12 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(ex, HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleGlobalException(Exception ex,HttpServletRequest request){
+        return buildErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
     private ErrorResponse buildErrorResponse(Exception ex, HttpStatus status,HttpServletRequest request){
         return new ErrorResponse(
                 LocalDateTime.now().toString(),
