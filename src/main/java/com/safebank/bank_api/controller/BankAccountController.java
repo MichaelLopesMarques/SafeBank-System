@@ -2,7 +2,11 @@ package com.safebank.bank_api.controller;
 
 import com.safebank.bank_api.domain.BankAccount;
 import com.safebank.bank_api.dto.BankAccountResponse;
+import com.safebank.bank_api.dto.CreateAccountRequest;
+import com.safebank.bank_api.dto.DepositRequest;
+import com.safebank.bank_api.dto.WithdrawRequest;
 import com.safebank.bank_api.service.BankAccountService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,30 +22,27 @@ public class BankAccountController {
         this.service = service;
     }
 
-    public record CreateAccountRequest(String id, String owner) {}
-    public record AmountRequest(BigDecimal amount) {}
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BankAccountResponse createAccount(@RequestBody CreateAccountRequest request) {
-        BankAccount account = service.createAccount(request.id(), request.owner());
+    public BankAccountResponse createAccount(@Valid @RequestBody CreateAccountRequest request) {
+        BankAccount account = service.createAccount(request.getId(), request.getOwner());
         return mapToResponse(account);
     }
 
     @PostMapping("/{id}/deposit")
     public BankAccountResponse deposit(
             @PathVariable String id,
-            @RequestBody AmountRequest request) {
+            @Valid @RequestBody DepositRequest request) {
 
-        return mapToResponse(service.deposit(id, request.amount()));
+        return mapToResponse(service.deposit(id, request.getAmount()));
     }
 
     @PostMapping("/{id}/withdraw")
     public BankAccountResponse withdraw(
             @PathVariable String id,
-            @RequestBody AmountRequest request) {
+            @Valid @RequestBody WithdrawRequest request) {
 
-        return mapToResponse(service.withdraw(id, request.amount()));
+        return mapToResponse(service.withdraw(id, request.getAmount()));
     }
 
     @GetMapping("/{id}/balance")

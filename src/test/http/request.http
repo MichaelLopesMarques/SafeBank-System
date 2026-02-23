@@ -7,6 +7,15 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:8080/accounts
+Content-Type: application/json
+
+{
+  "id": ""
+  "owner": "",
+}
+
+###
 
 GET http://localhost:8080/accounts/AC-DE-2026-01
 

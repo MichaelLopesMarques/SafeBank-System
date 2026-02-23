@@ -80,9 +80,7 @@ public class BankAccount {
         return lockStatus;
     }
 
-    public String getId(){
-        return id;
-    }
+    public String getId(){ return id; }
 
     public String getOwner(){ return owner; }
 
