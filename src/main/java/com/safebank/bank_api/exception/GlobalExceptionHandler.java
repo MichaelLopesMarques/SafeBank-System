@@ -1,34 +1,48 @@
 package com.safebank.bank_api.exception;
 
+import com.safebank.bank_api.dto.ErrorResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccountNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleAccountNotFound(AccountNotFoundException ex){
-        return ex.getMessage();
+    public ErrorResponse handleAccountNotFound(AccountNotFoundException ex, HttpServletRequest request){
+        return buildErrorResponse(ex, HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(AccountLockedException.class)
     @ResponseStatus(HttpStatus.LOCKED)
-    public String handleAccountLockedException(AccountLockedException ex){
-        return ex.getMessage();
+    public ErrorResponse handleAccountLockedException(AccountLockedException ex,HttpServletRequest request){
+        return buildErrorResponse(ex, HttpStatus.LOCKED, request);
     }
 
     @ExceptionHandler(InsufficientBalanceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInsufficientBalanceException(InsufficientBalanceException ex){
-        return ex.getMessage();
+    public ErrorResponse handleInsufficientBalanceException(InsufficientBalanceException ex, HttpServletRequest request){
+        return buildErrorResponse(ex, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(InvalidAmountException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidAmountException(InvalidAmountException ex){
-        return ex.getMessage();
+    public ErrorResponse handleInvalidAmountException(InvalidAmountException ex, HttpServletRequest request){
+        return buildErrorResponse(ex, HttpStatus.BAD_REQUEST, request);
+    }
+
+    private ErrorResponse buildErrorResponse(Exception ex, HttpStatus status,HttpServletRequest request){
+        return new ErrorResponse(
+                LocalDateTime.now().toString(),
+                status.value(),
+                status.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
     }
 }
