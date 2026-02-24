@@ -1,3 +1,4 @@
+### CREATE ACCOUNT SUCCESS
 POST http://localhost:8080/accounts
 Content-Type: application/json
 
@@ -6,25 +7,31 @@ Content-Type: application/json
   "owner": "Michael Marques"
 }
 
-###
+### CREATE ACCOUNT DUPLICATE
 POST http://localhost:8080/accounts
 Content-Type: application/json
 
 {
-  "id": ""
-  "owner": "",
+  "id": "AC-DE-2026-01",
+  "owner": "Peter Parker"
 }
 
-###
+### CREATE ACCOUNT EMPTY
+POST http://localhost:8080/accounts
+Content-Type: application/json
 
+{
+  "id": "",
+  "owner": ""
+}
+
+### GET ACCOUNT SUCCESS
 GET http://localhost:8080/accounts/AC-DE-2026-01
 
-###
-
+### GET ACCOUNT NOT FOUND
 GET http://localhost:8080/accounts/DOES-NOT-EXIST
 
-###
-
+### DEPOSIT SUCCESS
 POST http://localhost:8080/accounts/AC-DE-2026-01/deposit
 Content-Type: application/json
 
@@ -32,12 +39,10 @@ Content-Type: application/json
   "amount": 100
 }
 
-###
-
+### BALANCE SUCCESS
 GET http://localhost:8080/accounts/AC-DE-2026-01/balance
 
-###
-
+### WITHDRAW INSUFFICIENT BALANCE
 POST http://localhost:8080/accounts/AC-DE-2026-01/withdraw
 Content-Type: application/json
 
@@ -45,13 +50,43 @@ Content-Type: application/json
   "amount": 9999
 }
 
-###
-
+### DEPOSIT NEGATIVE AMOUNT
 POST http://localhost:8080/accounts/AC-DE-2026-01/deposit
 Content-Type: application/json
 
 {
   "amount": -50
+}
+
+### ACCOUNT LOCK
+POST http://localhost:8080/accounts/AC-DE-2026-01/lock
+
+### ACCOUNT LOCKSTATUS
+GET http://localhost:8080/accounts/AC-DE-2026-01
+
+### DEPOSIT AFTER ACCOUNT LOCK
+POST http://localhost:8080/accounts/AC-DE-2026-01/deposit
+Content-Type: application/json
+
+{
+  "amount": 500
+}
+
+### BALANCE SUCCESS
+GET http://localhost:8080/accounts/AC-DE-2026-01/balance
+
+### ACCOUNT UNLOCK
+POST http://localhost:8080/accounts/AC-DE-2026-01/unlock
+
+### ACCOUNT LOCKSTATUS 2
+GET http://localhost:8080/accounts/AC-DE-2026-01
+
+### DEPOSIT AFTER ACCOUNT UNLOCK
+POST http://localhost:8080/accounts/AC-DE-2026-01/deposit
+Content-Type: application/json
+
+{
+  "amount": 500
 }
 
 ###

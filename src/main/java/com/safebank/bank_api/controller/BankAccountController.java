@@ -45,6 +45,18 @@ public class BankAccountController {
         return mapToResponse(service.withdraw(id, request.getAmount()));
     }
 
+    @PostMapping("/{id}/lock")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void lock(@PathVariable String id){
+        service.lockAccount(id);
+    }
+
+    @PostMapping("/{id}/unlock")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unlock(@PathVariable String id){
+        service.unlockAccount(id);
+    }
+
     @GetMapping("/{id}/balance")
     public BigDecimal getBalance(@PathVariable String id) {
         return service.getBalance(id);

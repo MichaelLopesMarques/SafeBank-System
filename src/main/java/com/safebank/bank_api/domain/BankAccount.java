@@ -44,7 +44,7 @@ public class BankAccount {
 
     public void deposit(BigDecimal amount){
         if (lockStatus){
-            throw new AccountLockedException("Account is locked");
+            throw new AccountLockedException("Account is locked: " + id);
         }
         if(amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new InvalidAmountException("Amount must be above 0");
@@ -55,7 +55,7 @@ public class BankAccount {
 
     public void withdraw(BigDecimal amount) {
         if (lockStatus) {
-            throw new AccountLockedException("Account is locked");
+            throw new AccountLockedException("Account is locked: " + id);
         }
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new InvalidAmountException("Amount must be positive: " + amount);
