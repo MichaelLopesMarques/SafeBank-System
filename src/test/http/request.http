@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "id": "AC-DE-2026-01",
-  "owner": "Michael Marques"
+  "owner": "Peter Parker"
 }
 
 ### CREATE ACCOUNT DUPLICATE
@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
   "id": "AC-DE-2026-01",
-  "owner": "Peter Parker"
+  "owner": "Max Muster"
 }
 
 ### CREATE ACCOUNT EMPTY

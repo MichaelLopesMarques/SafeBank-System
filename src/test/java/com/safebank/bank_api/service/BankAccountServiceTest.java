@@ -20,7 +20,7 @@ class BankAccountServiceTest {
 
     @BeforeEach
     void setUp(){
-        account = new BankAccount("AC-DE-2026-01", "Michael Marques");
+        account = new BankAccount("AC-DE-2026-01", "Peter Parker");
         bankRepo = new MemoryBankAccountRepository();
         bankService = new BankAccountService(bankRepo);
 
@@ -29,13 +29,13 @@ class BankAccountServiceTest {
 
     @Test
     public void createAccount_shouldSuccess(){
-        bankService.createAccount("AC-DE-2026-02", "Michael Marques");
+        bankService.createAccount("AC-DE-2026-02", "Peter Parker");
         assertTrue(bankRepo.existsById("AC-DE-2026-02"));
     }
 
     @Test
     public void createAccount_shouldThrowException_whenAccountExists(){
-        assertThrows(IllegalStateException.class, () -> bankService.createAccount("AC-DE-2026-01", "Michael Marques"));
+        assertThrows(IllegalStateException.class, () -> bankService.createAccount("AC-DE-2026-01", "Peter Parker"));
     }
 
     @Test

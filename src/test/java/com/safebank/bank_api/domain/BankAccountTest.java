@@ -17,7 +17,7 @@ class BankAccountTest {
 
     @BeforeEach
     void setUp(){
-        account = new BankAccount("AC-DE-2026-01", "Michael Marques");
+        account = new BankAccount("AC-DE-2026-01", "Peter Parker");
     }
 
     // deposit Tests

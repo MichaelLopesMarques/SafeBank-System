@@ -10,6 +10,11 @@ public class CreateAccountRequest {
     @NotBlank
     private String owner;
 
+    public CreateAccountRequest(String id, String owner) {
+        this.id = id;
+        this.owner = owner;
+    }
+
     public String getId() {
         return id;
     }

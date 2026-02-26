@@ -23,7 +23,7 @@ class TransactionTest {
 
     @Test
     public void deposit_shouldTrackTransactionhistory(){
-        BankAccount account = new BankAccount("AC-DE-2026-01", "Michael Marques");
+        BankAccount account = new BankAccount("AC-DE-2026-01", "Peter Parker");
 
         account.deposit(BigDecimal.valueOf(100));
         List<Transaction> history = account.getTransactionHistory();
@@ -54,7 +54,7 @@ class TransactionTest {
 
     @Test
     public void withdraw_shouldTrackTransactionhistory(){
-        BankAccount account = new BankAccount("AC-DE-2026-01", "Michael Marques");
+        BankAccount account = new BankAccount("AC-DE-2026-01", "Peter Parker");
 
         account.deposit(BigDecimal.valueOf(200));
         account.withdraw(BigDecimal.valueOf(100));
