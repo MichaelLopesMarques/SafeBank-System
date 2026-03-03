@@ -85,4 +85,45 @@ class BankAccountControllerIT {
                 .andExpect(jsonPath("$.locked").value(false));
     }
 
+    @Test
+    void shouldWithdrawSuccessfully() throws Exception{
+        String createJson = """
+        {
+          "id": "AC-DE-2026-01",
+          "owner": "Peter Parker"
+        }
+        """;
+
+        mockMvc.perform(post("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createJson))
+                .andExpect(status().isCreated());
+
+        String depositJson = """
+        {
+          "amount": 100
+        }
+        """;
+
+        mockMvc.perform(post("/accounts/AC-DE-2026-01/deposit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(depositJson))
+                .andExpect(status().isOk());
+
+        String withdrawJson = """
+        {
+          "amount": 100
+        }
+        """;
+
+        mockMvc.perform(post("/accounts/AC-DE-2026-01/withdraw")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(withdrawJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("AC-DE-2026-01"))
+                .andExpect(jsonPath("$.owner").value("Peter Parker"))
+                .andExpect(jsonPath("$.balance").value(0))
+                .andExpect(jsonPath("$.locked").value(false));
+    }
+
 }
