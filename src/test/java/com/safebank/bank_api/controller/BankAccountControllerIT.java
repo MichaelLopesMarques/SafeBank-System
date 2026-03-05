@@ -2,7 +2,6 @@ package com.safebank.bank_api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safebank.bank_api.dto.CreateAccountRequest;
-import com.safebank.bank_api.dto.DepositRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,10 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -187,6 +185,95 @@ class BankAccountControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(withdrawJson))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldGetBalanceSuccessfully() throws Exception{
+        CreateAccountRequest request = new CreateAccountRequest("AC-DE-2026-01", "Peter Parker");
+
+        mockMvc.perform(post("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated());
+
+
+        mockMvc.perform(get("/accounts/AC-DE-2026-01/balance"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("0.00"));
+    }
+
+    @Test
+    void shouldLockSuccessfully() throws Exception{
+        CreateAccountRequest request = new CreateAccountRequest("AC-DE-2026-01", "Peter Parker");
+
+        mockMvc.perform(post("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/accounts/AC-DE-2026-01/lock"))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/accounts/AC-DE-2026-01"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("AC-DE-2026-01"))
+                .andExpect(jsonPath("$.owner").value("Peter Parker"))
+                .andExpect(jsonPath("$.balance").value(0))
+                .andExpect(jsonPath("$.locked").value(true));
+    }
+
+    @Test
+    void shouldNotDepositWhenLockedThrowException() throws Exception{
+        CreateAccountRequest request = new CreateAccountRequest("AC-DE-2026-01", "Peter Parker");
+
+        mockMvc.perform(post("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/accounts/AC-DE-2026-01/lock"))
+                .andExpect(status().isNoContent());
+
+        String depositJson = """
+        {
+          "amount": 100
+        }
+        """;
+
+        mockMvc.perform(post("/accounts/AC-DE-2026-01/deposit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(depositJson))
+                .andExpect(status().isLocked());
+    }
+
+    @Test
+    void shouldLockUnlockSuccessfully() throws Exception{
+        CreateAccountRequest request = new CreateAccountRequest("AC-DE-2026-01", "Peter Parker");
+
+        mockMvc.perform(post("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/accounts/AC-DE-2026-01/lock"))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/accounts/AC-DE-2026-01"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("AC-DE-2026-01"))
+                .andExpect(jsonPath("$.owner").value("Peter Parker"))
+                .andExpect(jsonPath("$.balance").value(0))
+                .andExpect(jsonPath("$.locked").value(true));
+
+        mockMvc.perform(post("/accounts/AC-DE-2026-01/unlock"))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/accounts/AC-DE-2026-01"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("AC-DE-2026-01"))
+                .andExpect(jsonPath("$.owner").value("Peter Parker"))
+                .andExpect(jsonPath("$.balance").value(0))
+                .andExpect(jsonPath("$.locked").value(false));
     }
 
 }
