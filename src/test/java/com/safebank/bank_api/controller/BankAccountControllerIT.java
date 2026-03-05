@@ -51,7 +51,7 @@ class BankAccountControllerIT {
 
         mockMvc.perform(post("/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(objectMapper.writeValueAsString(duplicate)))
                 .andExpect(status().isConflict());
     }
 
@@ -83,6 +83,32 @@ class BankAccountControllerIT {
                 .andExpect(jsonPath("$.owner").value("Peter Parker"))
                 .andExpect(jsonPath("$.balance").value(100))
                 .andExpect(jsonPath("$.locked").value(false));
+    }
+
+    @Test
+    void shouldDepositThrowException() throws Exception{
+        String createJson = """
+        {
+          "id": "AC-DE-2026-01",
+          "owner": "Peter Parker"
+        }
+        """;
+
+        mockMvc.perform(post("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createJson))
+                .andExpect(status().isCreated());
+
+        String depositJson = """
+        {
+          "amount": -50
+        }
+        """;
+
+        mockMvc.perform(post("/accounts/AC-DE-2026-01/deposit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(depositJson))
+                .andExpect(status().isBadRequest() );
     }
 
     @Test
@@ -124,6 +150,43 @@ class BankAccountControllerIT {
                 .andExpect(jsonPath("$.owner").value("Peter Parker"))
                 .andExpect(jsonPath("$.balance").value(0))
                 .andExpect(jsonPath("$.locked").value(false));
+    }
+
+    @Test
+    void shouldWithdrawThrowException() throws Exception{
+        String createJson = """
+        {
+          "id": "AC-DE-2026-01",
+          "owner": "Peter Parker"
+        }
+        """;
+
+        mockMvc.perform(post("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createJson))
+                .andExpect(status().isCreated());
+
+        String depositJson = """
+        {
+          "amount": 100
+        }
+        """;
+
+        mockMvc.perform(post("/accounts/AC-DE-2026-01/deposit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(depositJson))
+                .andExpect(status().isOk());
+
+        String withdrawJson = """
+        {
+          "amount": 200
+        }
+        """;
+
+        mockMvc.perform(post("/accounts/AC-DE-2026-01/withdraw")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(withdrawJson))
+                .andExpect(status().isBadRequest());
     }
 
 }
