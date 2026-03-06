@@ -1,6 +1,7 @@
 package com.safebank.bank_api.controller;
 
 import com.safebank.bank_api.domain.BankAccount;
+import com.safebank.bank_api.domain.Transaction;
 import com.safebank.bank_api.dto.BankAccountResponse;
 import com.safebank.bank_api.dto.CreateAccountRequest;
 import com.safebank.bank_api.dto.DepositRequest;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
@@ -65,6 +67,11 @@ public class BankAccountController {
     @GetMapping("/{id}")
     public BankAccountResponse getAccount(@PathVariable String id) {
         return mapToResponse(service.getAccount(id));
+    }
+
+    @GetMapping("/{id}/transactions")
+    public List<Transaction> getTransactions(@PathVariable String id){
+        return service.getTransactions(id);
     }
 
     private BankAccountResponse mapToResponse(BankAccount account) {

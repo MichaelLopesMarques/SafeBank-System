@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "bank_account")
 public class BankAccount {
 
-    @Transient
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new ArrayList<>();
 
     @Id
@@ -50,7 +50,9 @@ public class BankAccount {
             throw new InvalidAmountException("Amount must be above 0");
         }
         balance = balance.add(amount);
-        transactions.add(Transaction.deposit(amount, balance));
+
+        Transaction t = Transaction.deposit(this, amount, balance);
+        transactions.add(t);
     }
 
     public void withdraw(BigDecimal amount) {
@@ -65,7 +67,9 @@ public class BankAccount {
                     "Error! Balance: " + balance + ", Amount: " + amount);
         }
         balance = balance.subtract(amount);
-        transactions.add(Transaction.withdraw(amount, balance));
+
+        Transaction t = Transaction.withdraw(this, amount, balance);
+        transactions.add(t);
     }
 
     public void lock(){

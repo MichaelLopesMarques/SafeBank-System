@@ -1,5 +1,6 @@
 package com.safebank.bank_api.service;
 
+import com.safebank.bank_api.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.safebank.bank_api.domain.BankAccount;
@@ -17,12 +18,13 @@ class BankAccountServiceTest {
     private BankAccount account;
     private MemoryBankAccountRepository bankRepo;
     private BankAccountService bankService;
+    private TransactionRepository transactionRepository;
 
     @BeforeEach
     void setUp(){
         account = new BankAccount("AC-DE-2026-01", "Peter Parker");
         bankRepo = new MemoryBankAccountRepository();
-        bankService = new BankAccountService(bankRepo);
+        bankService = new BankAccountService(bankRepo, transactionRepository);
 
         bankRepo.save(account);
     }

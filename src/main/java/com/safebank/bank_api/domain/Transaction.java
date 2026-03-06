@@ -1,25 +1,45 @@
 package com.safebank.bank_api.domain;
 
-import java.math.BigDecimal;
+import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
 public class Transaction {
 
-    private final String type;
-    private final BigDecimal amount;
-    private final BigDecimal balanceAfter;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String type;
+    private BigDecimal amount;
+    private BigDecimal balanceAfter;
+    private LocalDateTime timestamp;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private BankAccount account;
+
+    protected Transaction() {}
 
     public Transaction(String type, BigDecimal amount, BigDecimal balanceAfter){
         this.type = type;
         this.amount = amount;
         this.balanceAfter = balanceAfter;
+        this.timestamp = LocalDateTime.now();
     }
 
-    public static Transaction deposit(BigDecimal amount, BigDecimal balance){
-        return new Transaction("DEPOSIT", amount, balance);
+    public static Transaction deposit(BankAccount account, BigDecimal amount, BigDecimal balance){
+        Transaction t = new Transaction("DEPOSIT", amount, balance);
+        t.account = account;
+        return t;
     }
 
-    public static Transaction withdraw(BigDecimal amount, BigDecimal balance){
-        return new Transaction("WITHDRAW", amount, balance);
+    public static Transaction withdraw(BankAccount account, BigDecimal amount, BigDecimal balance){
+        Transaction t = new Transaction("WITHDRAW", amount, balance);
+        t.account = account;
+        return t;
     }
 
     public String getType(){
@@ -32,5 +52,9 @@ public class Transaction {
 
     public BigDecimal getBalanceAfter(){
         return balanceAfter;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 }

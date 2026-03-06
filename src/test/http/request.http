@@ -89,4 +89,7 @@ Content-Type: application/json
   "amount": 500
 }
 
+### TRANSACTIONHISTORY SUCCESS
+GET http://localhost:8080/accounts/AC-DE-2026-01/transactions
+
 ###
