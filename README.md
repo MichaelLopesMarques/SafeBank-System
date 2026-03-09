@@ -1,36 +1,36 @@
 # SafeBank API
 
-RESTful Banking API built with Spring Boot.
+RESTful Banking API, entwickelt mit Spring Boot.
 
-This project demonstrates a simple banking system with account management, transactions, and money transfers.
+Dieses Projekt implementiert ein einfaches Banksystem mit Kontoverwaltung, Transaktionen und Geldüberweisungen zwischen Konten.
 
 ## Features
 
-* Create bank accounts
-* Deposit money
-* Withdraw money
-* Transfer money between accounts
-* Lock / unlock accounts
-* Transaction history
-* Validation and error handling
+* Bankkonto erstellen
+* Geld einzahlen (Deposit)
+* Geld abheben (Withdraw)
+* Geld zwischen Konten transferieren
+* Konto sperren / entsperren
+* Transaktionshistorie anzeigen
+* Validierung und Fehlerbehandlung
 
-## Tech Stack
+## Technologien
 
 * Java 21
 * Spring Boot
 * Spring Data JPA
 * Hibernate
-* H2 Database
+* H2 Datenbank
 * Maven
 * JUnit & MockMvc
 
 ## API Endpoints
 
-### Create Account
+### Konto erstellen
 
 POST /accounts
 
-```
+```json
 {
   "id": "AC-DE-2026-01",
   "owner": "Peter Parker"
@@ -39,11 +39,11 @@ POST /accounts
 
 ---
 
-### Deposit
+### Einzahlung
 
 POST /accounts/{id}/deposit
 
-```
+```json
 {
   "amount": 100
 }
@@ -51,11 +51,11 @@ POST /accounts/{id}/deposit
 
 ---
 
-### Withdraw
+### Auszahlung
 
 POST /accounts/{id}/withdraw
 
-```
+```json
 {
   "amount": 50
 }
@@ -63,11 +63,11 @@ POST /accounts/{id}/withdraw
 
 ---
 
-### Transfer Money
+### Geldüberweisung
 
 POST /accounts/transfer
 
-```
+```json
 {
   "fromAccount": "AC-DE-2026-01",
   "toAccount": "AC-DE-2026-02",
@@ -77,21 +77,21 @@ POST /accounts/transfer
 
 ---
 
-### Get Balance
+### Kontostand abrufen
 
 GET /accounts/{id}/balance
 
 ---
 
-### Transaction History
+### Transaktionshistorie
 
 GET /accounts/{id}/transactions
 
 ---
 
-## Example Transaction Response
+## Beispiel: Transaktionsantwort
 
-```
+```json
 [
   {
     "id": 1,
@@ -105,7 +105,7 @@ GET /accounts/{id}/transactions
 
 ---
 
-## Project Structure
+## Projektstruktur
 
 ```
 controller
@@ -116,17 +116,17 @@ dto
 exception
 ```
 
-The project follows a layered architecture separating business logic, persistence, and API models.
+Das Projekt folgt einer **Layered Architecture**, bei der API, Business-Logik und Datenzugriff voneinander getrennt sind.
 
 ---
 
-## Running the Project
+## Projekt starten
 
-```
+```bash
 mvn spring-boot:run
 ```
 
-Application will start on:
+Die Anwendung läuft anschließend unter:
 
 ```
 http://localhost:8080
@@ -136,13 +136,16 @@ http://localhost:8080
 
 ## Tests
 
-Integration tests are implemented using MockMvc.
+Integrationstests wurden mit **JUnit und MockMvc** implementiert.
 
-Run tests with:
+Tests ausführen:
 
-```
+```bash
 mvn test
 ```
-or
 
-You can test all endpoints using the included request.http file.
+---
+
+## API testen
+
+Alle Endpoints können über die Datei **request.http** getestet werden, die im Projekt enthalten ist.
