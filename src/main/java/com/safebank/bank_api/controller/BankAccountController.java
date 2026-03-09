@@ -2,10 +2,7 @@ package com.safebank.bank_api.controller;
 
 import com.safebank.bank_api.domain.BankAccount;
 import com.safebank.bank_api.domain.Transaction;
-import com.safebank.bank_api.dto.BankAccountResponse;
-import com.safebank.bank_api.dto.CreateAccountRequest;
-import com.safebank.bank_api.dto.DepositRequest;
-import com.safebank.bank_api.dto.WithdrawRequest;
+import com.safebank.bank_api.dto.*;
 import com.safebank.bank_api.service.BankAccountService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -70,7 +67,7 @@ public class BankAccountController {
     }
 
     @GetMapping("/{id}/transactions")
-    public List<Transaction> getTransactions(@PathVariable String id){
+    public List<TransactionResponse> getTransactions(@PathVariable String id){
         return service.getTransactions(id);
     }
 
