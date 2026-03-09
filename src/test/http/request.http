@@ -92,7 +92,7 @@ Content-Type: application/json
 ### TRANSACTIONHISTORY SUCCESS
 GET http://localhost:8080/accounts/AC-DE-2026-01/transactions
 
-### CREATE ACCOUNT SUCCESS
+### CREATE SECOND ACCOUNT SUCCESS
 POST http://localhost:8080/accounts
 Content-Type: application/json
 
