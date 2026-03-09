@@ -21,7 +21,7 @@ public class Transaction {
     @JoinColumn(name = "account_id")
     private BankAccount account;
 
-    protected Transaction() {}
+    protected Transaction(){}
 
     public Transaction(String type, BigDecimal amount, BigDecimal balanceAfter){
         this.type = type;
@@ -40,6 +40,10 @@ public class Transaction {
         Transaction t = new Transaction("WITHDRAW", amount, balance);
         t.account = account;
         return t;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getType(){
