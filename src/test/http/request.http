@@ -92,4 +92,23 @@ Content-Type: application/json
 ### TRANSACTIONHISTORY SUCCESS
 GET http://localhost:8080/accounts/AC-DE-2026-01/transactions
 
+### CREATE ACCOUNT SUCCESS
+POST http://localhost:8080/accounts
+Content-Type: application/json
+
+{
+  "id": "AC-DE-2026-02",
+  "owner": "Max Parker"
+}
+
+### TRANSFER SUCESS
+POST http://localhost:8080/accounts/transfer
+Content-Type: application/json
+
+{
+  "fromAccount": "AC-DE-2026-01",
+  "toAccount": "AC-DE-2026-02",
+  "amount": 100
+}
+
 ###

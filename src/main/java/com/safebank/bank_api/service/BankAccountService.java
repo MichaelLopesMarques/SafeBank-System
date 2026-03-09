@@ -46,6 +46,24 @@ public class BankAccountService {
         return repository.save(account);
     }
 
+    public void transfer(String fromId, String toId, BigDecimal amount){
+        if(fromId.equals(toId)){
+            throw new IllegalArgumentException("Cannot transfer to same Account");
+        }
+
+        BankAccount from = repository.findById(fromId)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found: " + fromId));
+
+        BankAccount to = repository.findById(toId)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found: " + toId));
+
+        from.withdraw(amount);
+        to.deposit(amount);
+
+        repository.save(from);
+        repository.save(to);
+    }
+
     public BigDecimal getBalance(String accountId){
         return repository.findById(accountId)
                 .map(BankAccount::getBalance)

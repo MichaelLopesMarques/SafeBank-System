@@ -44,6 +44,15 @@ public class BankAccountController {
         return mapToResponse(service.withdraw(id, request.getAmount()));
     }
 
+    @PostMapping("/transfer")
+    public void transfer(@RequestBody TransferRequest request){
+        service.transfer(
+                request.getFromAccount(),
+                request.getToAccount(),
+                request.getAmount()
+        );
+    }
+
     @PostMapping("/{id}/lock")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void lock(@PathVariable String id){
